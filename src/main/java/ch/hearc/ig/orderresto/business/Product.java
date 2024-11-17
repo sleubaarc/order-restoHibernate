@@ -3,12 +3,22 @@ package ch.hearc.ig.orderresto.business;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
 
+@Entity
+@Table(name="PRODUIT")
 public class Product {
-
+    @Id
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE,
+            generator="SEQ_PRODUIT"
+    )
     private Long id;
+    @Column(name="NOM")
     private String name;
+    @Column(name="PRIX_UNITAIRE")
     private BigDecimal unitPrice;
+    @Column(name="DESCRIPTION")
     private String description;
     private Set<Order> orders;
     private Restaurant restaurant;
