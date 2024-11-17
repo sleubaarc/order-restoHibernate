@@ -2,10 +2,19 @@ package ch.hearc.ig.orderresto.business;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
 
+@Entity
+@Table(name="RESTAURANT")
 public class Restaurant {
 
+    @Id
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE,
+            generator="SEQ_RESTAURANT"
+    )
     private Long id;
+    @Column(name="NOM")
     private String name;
     private Set<Order> orders;
     private Address address;
