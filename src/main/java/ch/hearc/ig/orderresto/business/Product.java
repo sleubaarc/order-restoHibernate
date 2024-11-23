@@ -5,22 +5,25 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
-@Entity
-@Table(name="PRODUIT")
+@Entity // La classe est une entité persistante qui est mappée à une table de la DB
+@Table(name="PRODUIT") // la table de la DB où est mappée l'entité s'appelle "PRODUIT"
 public class Product {
-    @Id
+    @Id // id est la clé primaire de la table
     @GeneratedValue(
-            strategy=GenerationType.SEQUENCE,
-            generator="SEQ_PRODUIT"
+            strategy=GenerationType.SEQUENCE, // la valeur de id est générée par une séquence
+            generator="SEQ_PRODUIT" // nom de la séquence
     )
     private Long id;
-    @Column(name="NOM")
+    @Column(name="NOM") // attribut mappé sur la colonne NOM
     private String name;
-    @Column(name="PRIX_UNITAIRE")
+    @Column(name="PRIX_UNITAIRE") // attribut mappé sur la colonne PRIX_UNITAIRE
     private BigDecimal unitPrice;
-    @Column(name="DESCRIPTION")
+    @Column(name="DESCRIPTION") // attribut mappé sur la colonne DESCRIPTION
     private String description;
+    @ManyToMany(mappedBy="products") // relation many-to-many avec la table COMMANDE
     private Set<Order> orders;
+    @ManyToOne  // relation many-to-one avec la table RESTAURANT
+    @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
 
     public Product(Long id, String name, BigDecimal unitPrice, String description, Restaurant restaurant) {
