@@ -3,12 +3,15 @@ package ch.hearc.ig.orderresto.business;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Embedded;
+
 public abstract class Customer {
 
     private Long id;
     private String phone;
     private String email;
     private Set<Order> orders;
+    @Embedded // l'adresse existe comme objet mais pas comme table
     private Address address;
     private String type;
 
