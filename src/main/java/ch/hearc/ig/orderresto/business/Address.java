@@ -1,11 +1,19 @@
 package ch.hearc.ig.orderresto.business;
 
-public class Address {
+import javax.persistence.Embeddable;
+import javax.persistence.Column;
 
+@Embeddable // l'adresse existe comme objet mais pas comme table
+public class Address {
+    @Column (name="PAYS") // attribut mappé sur la colonne PAYS
     private String countryCode;
+    @Column (name="CODE_POSTAL") // attribut mappé sur la colonne CODE_POSTAL
     private String postalCode;
+    @Column (name="LOCALITE") // attribut mappé sur la colonne LOCALITE
     private String locality;
+    @Column (name="RUE") // attribut mappé sur la colonne RUE
     private String street;
+    @Column (name="NUM_RUE") // attribut mappé sur la colonne NUMERO
     private String streetNumber;
 
     public Address(String countryCode, String postalCode, String locality, String street, String streetNumber) {
