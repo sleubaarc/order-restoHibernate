@@ -4,20 +4,23 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
-@Entity
-@Table(name="RESTAURANT")
+@Entity // La classe est une entité persistante qui est mappée à une table de la DB
+@Table(name="RESTAURANT") // la table de la DB où est mappée l'entité s'appelle "RESTAURANT"
 public class Restaurant {
 
-    @Id
+    @Id // id est la clé primaire de la table
     @GeneratedValue(
-            strategy=GenerationType.SEQUENCE,
-            generator="SEQ_RESTAURANT"
+            strategy=GenerationType.SEQUENCE, // la valeur de id est générée par une séquence
+            generator="SEQ_RESTAURANT" // nom de la séquence
     )
     private Long id;
-    @Column(name="NOM")
+    @Column(name="NOM") // attribut mappé sur la colonne NOM
     private String name;
+    @OneToMany(mappedBy="RESTAURANT") // relation one-to-many avec la table COMMANDE
     private Set<Order> orders;
+    @Embedded // l'adresse existe comme objet mais pas comme table
     private Address address;
+    @OneToMany(mappedBy="RESTAURANT") // relation one-to-many avec la table PRODUIT
     private Set<Product> productsCatalog;
 
     public Restaurant(Long id, String name, Address address) {
