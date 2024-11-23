@@ -4,13 +4,20 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="GuideRestoPersistenceUnit">
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@db.ig.he-arc.ch:1521:ens" />
-            <property name="javax.persistence.jdbc.user" value="steeve_leuba" />
-            <property name="javax.persistence.jdbc.password" value="steeve_leuba" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.generate_statistics" value="true"/>
+            <property name="javax.persistence.jdbc.driver"
+                      value="oracle.jdbc.OracleDriver" />
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:oracle:thin:@db.ig.he-arc.ch:1521:ens" />
+            <property name="javax.persistence.jdbc.user"
+                      value="cyrille_dosghali" />
+            <property name="javax.persistence.jdbc.password"
+                      value="cyrille_dosghali" />
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.Oracle12cDialect"/>
+            <property name="hibernate.show_sql"
+                      value="true"/>
+            <property name="hibernate.generate_statistics"
+                      value="true"/>
         </properties>
     </persistence-unit>
 </persistence>
