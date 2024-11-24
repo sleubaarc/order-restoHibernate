@@ -14,14 +14,19 @@ public class Product {
             generator="SEQ_PRODUIT" // nom de la séquence
     )
     private Long id;
+
     @Column(name="NOM") // attribut mappé sur la colonne NOM
     private String name;
+
     @Column(name="PRIX_UNITAIRE") // attribut mappé sur la colonne PRIX_UNITAIRE
     private BigDecimal unitPrice;
+
     @Column(name="DESCRIPTION") // attribut mappé sur la colonne DESCRIPTION
     private String description;
+
     @ManyToMany(mappedBy="products") // relation many-to-many avec la table COMMANDE
     private Set<Order> orders;
+
     @ManyToOne  // relation many-to-one avec la table RESTAURANT
     @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
