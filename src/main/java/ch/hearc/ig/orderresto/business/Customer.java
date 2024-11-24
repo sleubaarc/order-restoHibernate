@@ -3,16 +3,32 @@ package ch.hearc.ig.orderresto.business;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Embedded;
+import javax.persistence.*;
 
+@Entity
+@Table(name="CLIENT")
 public abstract class Customer {
 
+    @Id // id est la clé primaire de la table
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE, // la valeur de id est générée par une séquence
+            generator="SEQ_CLIENT" // nom de la séquence
+    )
     private Long id;
+
+    @Column(name="TELEPHONE") // attribut mappé sur la colonne TELEPHONE
     private String phone;
+
+    @Column(name="EMAIL") // attribut mappé sur la colonne EMAIL
     private String email;
+
+    @OneToMany(mappedBy="customer")
     private Set<Order> orders;
+
     @Embedded // l'adresse existe comme objet mais pas comme table
     private Address address;
+
+    @Column(name="TYPE") // attribut mappé sur la colonne TYPE
     private String type;
 
     protected Customer(Long id, String phone, String email, Address address, String type) {
