@@ -18,13 +18,13 @@ public class Restaurant {
     @Column(name="NOM") // attribut mappé sur la colonne NOM
     private String name;
 
-    @OneToMany(mappedBy="restaurant") // relation one-to-many avec la table COMMANDE
+    @OneToMany(mappedBy="restaurant") // relation one-to-many avec la table COMMANDE, il faut indiquer l'attribut dans commande --> en minuscule
     private Set<Order> orders;
 
     @Embedded // l'adresse existe comme objet mais pas comme table
     private Address address;
 
-    @OneToMany(mappedBy="RESTAURANT") // relation one-to-many avec la table PRODUIT
+    @OneToMany(mappedBy="restaurant") // relation one-to-many avec la table PRODUIT, il faut indiquer l'attribut dans produit --> en minuscule
     private Set<Product> productsCatalog;
 
     public Restaurant(Long id, String name, Address address) {
@@ -65,4 +65,39 @@ public class Restaurant {
     public void addOrder(Order order) {
         this.orders.add(order);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Restaurant restaurant = (Restaurant) o;
+
+        // Si les IDs sont présents, on compare uniquement les IDs
+        if (id != null && restaurant.id != null) {
+            return id.equals(restaurant.id);
+        }
+
+        // Sinon, on compare le nom et l'adresse
+        // Un restaurant est considéré unique par son nom et son adresse
+        return name != null && address != null &&
+                name.equals(restaurant.name) &&
+                address.equals(restaurant.address);
+    }
+
+    @Override
+    public int hashCode() {
+        // Si l'ID est présent, on utilise uniquement l'ID
+        if (id != null) {
+            return id.hashCode();
+        }
+
+        // Sinon, on utilise les mêmes attributs que dans equals()
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (name != null ? name.hashCode() : 0);
+        result = prime * result + (address != null ? address.hashCode() : 0);
+        return result;
+    }
+
 }
