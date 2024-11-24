@@ -14,12 +14,16 @@ public class Restaurant {
             generator="SEQ_RESTAURANT" // nom de la séquence
     )
     private Long id;
+
     @Column(name="NOM") // attribut mappé sur la colonne NOM
     private String name;
-    @OneToMany(mappedBy="RESTAURANT") // relation one-to-many avec la table COMMANDE
+
+    @OneToMany(mappedBy="restaurant") // relation one-to-many avec la table COMMANDE
     private Set<Order> orders;
+
     @Embedded // l'adresse existe comme objet mais pas comme table
     private Address address;
+
     @OneToMany(mappedBy="RESTAURANT") // relation one-to-many avec la table PRODUIT
     private Set<Product> productsCatalog;
 
