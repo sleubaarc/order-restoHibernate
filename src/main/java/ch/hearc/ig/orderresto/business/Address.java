@@ -2,6 +2,7 @@ package ch.hearc.ig.orderresto.business;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Column;
+import java.util.Objects;
 
 @Embeddable // l'adresse existe comme objet mais pas comme table
 public class Address {
@@ -42,5 +43,25 @@ public class Address {
 
     public String getStreetNumber() {
         return streetNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        // Comparer tous les champs de l'adresse
+        return (countryCode != null ? countryCode.equals(address.countryCode) : address.countryCode == null) &&
+                (postalCode != null ? postalCode.equals(address.postalCode) : address.postalCode == null) &&
+                (locality != null ? locality.equals(address.locality) : address.locality == null) &&
+                (street != null ? street.equals(address.street) : address.street == null) &&
+                (streetNumber != null ? streetNumber.equals(address.streetNumber) : address.streetNumber == null);
+    }
+    //méthode moins performante (refléxion interne) mais plus lisible --> utilise également Prime 31 (moins de collisions)
+    @Override
+    public int hashCode() {
+        return Objects.hash(countryCode, postalCode, locality, street, streetNumber);
     }
 }
