@@ -79,4 +79,45 @@ public class Product {
     public void addOrder(Order order) {
         this.orders.add(order);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        // Si les IDs sont présents, on compare uniquement les IDs
+        if (id != null && product.id != null) {
+            return id.equals(product.id);
+        }
+
+        // Sinon, on compare les attributs métier qui identifient un produit
+        return name != null && restaurant != null &&
+                name.equals(product.name) &&
+                restaurant.equals(product.restaurant);
+    }
+
+    @Override
+    public int hashCode() {
+        // Si l'ID est présent, pas besoin de calcul complexe
+        if (id != null) {
+            return id.hashCode();
+        }
+
+        // Sinon, on calcule avec les attributs métier
+        final int prime = 31;
+        int result = 1;  // On commence avec 1
+
+        // Pour le nom "Pizza" (imaginons que son hashCode est 12345)
+        result = prime * result + (name != null ? name.hashCode() : 0);
+        // result = 31 * 1 + 12345 = 31 + 12345 = 12376
+
+        // Pour le restaurant (imaginons que son hashCode est 67890)
+        result = prime * result + (restaurant != null ? restaurant.hashCode() : 0);
+        // result = 31 * 12376 + 67890 = 383656 + 67890 = 451546
+
+        return result;
+    }
+
 }
