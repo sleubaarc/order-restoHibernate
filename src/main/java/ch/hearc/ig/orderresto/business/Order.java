@@ -87,4 +87,40 @@ public class Order {
         this.products.add(product);
         this.totalAmount = this.totalAmount.add(product.getUnitPrice());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        // Si les IDs sont présents, on compare uniquement les IDs
+        if (id != null && order.id != null) {
+            return id.equals(order.id);
+        }
+
+        // Sinon, on compare les attributs métier qui identifient une commande
+        return customer != null && restaurant != null && when != null &&
+                customer.equals(order.customer) &&
+                restaurant.equals(order.restaurant) &&
+                when.equals(order.when);
+    }
+
+    @Override
+    public int hashCode() {
+        // Si l'ID est présent, on utilise uniquement l'ID
+        if (id != null) {
+            return id.hashCode();
+        }
+
+        // Sinon, on utilise les mêmes attributs que dans equals()
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (customer != null ? customer.hashCode() : 0);
+        result = prime * result + (restaurant != null ? restaurant.hashCode() : 0);
+        result = prime * result + (when != null ? when.hashCode() : 0);
+        return result;
+    }
+
 }
