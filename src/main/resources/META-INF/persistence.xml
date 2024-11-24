@@ -5,19 +5,19 @@
     <persistence-unit name="GuideRestoPersistenceUnit">
         <properties>
             <property name="javax.persistence.jdbc.driver"
-                      value="oracle.jdbc.OracleDriver" />
+                      value="oracle.jdbc.OracleDriver" /> <!--le driver -->
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:oracle:thin:@db.ig.he-arc.ch:1521:ens" />
+                      value="jdbc:oracle:thin:@db.ig.he-arc.ch:1521:ens" /> <!--DB connection -->
             <property name="javax.persistence.jdbc.user"
-                      value="cyrille_dosghali" />
+                      value="cyrille_dosghali" /> <!--USER -->
             <property name="javax.persistence.jdbc.password"
-                      value="cyrille_dosghali" />
+                      value="cyrille_dosghali" /> <!--PASSWORD -->
             <property name="hibernate.dialect"
-                      value="org.hibernate.dialect.Oracle12cDialect"/>
+                      value="org.hibernate.dialect.Oracle12cDialect"/> <!--Framework Hibernate -->
             <property name="hibernate.show_sql"
-                      value="true"/>
+                      value="true"/> <!-- View SQL command -->
             <property name="hibernate.generate_statistics"
-                      value="true"/>
+                      value="true"/> <!-- Outil de debug Hibernate -->
         </properties>
     </persistence-unit>
 </persistence>
