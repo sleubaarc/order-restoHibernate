@@ -15,12 +15,15 @@ public class Order {
             generator="SEQ_COMMANDE" // nom de la séquence
     )
     private Long id;
+
     @ManyToOne // relation many-to-one avec la table CLIENT
     @JoinColumn(name="FK_CLIENT", nullable=false) // clé étrangère vers la table CLIENT
     private Customer customer;
+
     @ManyToOne // relation many-to-one avec la table RESTAURANT
     @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
+
     @ManyToMany // relation many-to-many avec la table PRODUIT
     @JoinTable(
             name="PRODUIT_COMMANDE", // table associative
@@ -28,10 +31,13 @@ public class Order {
             inverseJoinColumns=@JoinColumn(name="FK_PRODUIT") // clé étrangère vers la table PRODUIT
     )
     private Set<Product> products;
+
     @Column(name="A_EMPORTER")
     private String takeAway;
+
     @Column(name="QUAND")
     private LocalDateTime when;
+
     // On ne mappe pas le totalAmount car il est calculé à partir des produits
     private BigDecimal totalAmount;
 
