@@ -25,6 +25,10 @@ public class Address {
         this.streetNumber = streetNumber;
     }
 
+    public Address() {
+
+    }
+
     public String getCountryCode() {
         return countryCode;
     }
