@@ -9,13 +9,19 @@ import java.util.Set;
 @Entity // La classe est une entité persistante qui est mappée à une table de la DB
 @Table(name="COMMANDE") // la table de la DB où est mappée l'entité s'appelle "COMMANDE"
 public class Order {
-    @Id // id est la clé primaire de la table
+    @Id
     @GeneratedValue(
-            strategy=GenerationType.SEQUENCE, // la valeur de id est générée par une séquence
-            generator="SEQ_COMMANDE" // nom de la séquence
+            strategy = GenerationType.SEQUENCE, // Utilise une séquence pour générer les valeurs
+            generator = "seq_commande"        // Associe l'ID au générateur nommé "seq_restaurant"
     )
+    @SequenceGenerator(
+            name = "seq_commande",            // Nom du générateur
+            sequenceName = "SEQ_COMMANDE",    // Nom de la séquence dans la base de données
+            allocationSize = 1                 // Taille d'allocation définie à 1 pour correspondre à la séquence dans la base
+    )
+    @Column(name = "NUMERO")
     private Long id;
-
+    @Transient
     @ManyToOne // relation many-to-one avec la table CLIENT
     @JoinColumn(name="FK_CLIENT", nullable=false) // clé étrangère vers la table CLIENT
     private Customer customer;
@@ -49,6 +55,10 @@ public class Order {
         this.takeAway = takeAway;
         this.totalAmount = new BigDecimal(0);
         this.when = when;
+    }
+
+    public Order() {
+
     }
 
     public Long getId() {
