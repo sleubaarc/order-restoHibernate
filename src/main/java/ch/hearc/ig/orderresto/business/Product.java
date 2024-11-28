@@ -8,11 +8,17 @@ import javax.persistence.*;
 @Entity // La classe est une entité persistante qui est mappée à une table de la DB
 @Table(name="PRODUIT") // la table de la DB où est mappée l'entité s'appelle "PRODUIT"
 public class Product {
-    @Id // id est la clé primaire de la table
+    @Id
     @GeneratedValue(
-            strategy=GenerationType.SEQUENCE, // la valeur de id est générée par une séquence
-            generator="SEQ_PRODUIT" // nom de la séquence
+            strategy = GenerationType.SEQUENCE, // Utilise une séquence pour générer les valeurs
+            generator = "seq_produit"        // Associe l'ID au générateur nommé "seq_restaurant"
     )
+    @SequenceGenerator(
+            name = "seq_produit",            // Nom du générateur
+            sequenceName = "SEQ_PRODUIT",    // Nom de la séquence dans la base de données
+            allocationSize = 1                 // Taille d'allocation définie à 1 pour correspondre à la séquence dans la base
+    )
+    @Column(name = "NUMERO")
     private Long id;
 
     @Column(name="NOM") // attribut mappé sur la colonne NOM
@@ -39,6 +45,10 @@ public class Product {
         this.orders = new HashSet<>();
         this.restaurant = restaurant;
         restaurant.registerProduct(this);
+    }
+
+    public Product() {
+
     }
 
     public Long getId() {
