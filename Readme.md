@@ -12,20 +12,17 @@ Launch application and follow the instructions.
 * fully annotated the Restaurant class
 * fully annotated the Order class
 * annnotated (@Embeddable) the Address class and use itin the Restaurant and Customer classes
-* remove Mappers
-* remove ConnectionDb
-* migrate the DataMappers SQL requests to Hibernate annotated service classes
+
+##ToDo
+* choose which Data structure to use for each ...toMany relationship
 * annotate the abstract Customer class
 * annotate the PrivateCustomer class
 * annotate the OrganizationCustomer class
 * modify the service classes to use the annotations
-
-##ToDo
-* choose which Data structure to use for each ...toMany relationship ??
-* test the persistence --> half done
-* Correct methode in OrderService to format order and display order and not bug
-* Add DAO in persistence to move methode from service to persistence
-
+* migrate the DataMappers SQL requests to Hibernate annotated service classes
+* remove the mo-more-used DataMappers classes
+* test the persistence
+* remove the ConnectionDb class
 
 
 
