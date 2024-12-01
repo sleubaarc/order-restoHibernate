@@ -2,34 +2,42 @@ package ch.hearc.ig.orderresto.business;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name="CLIENT")
+@Table(name = "CLIENT")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TYPE", discriminatorType = DiscriminatorType.STRING, length = 1)
 public abstract class Customer {
-
-    @Id // id est la clé primaire de la table
-    @GeneratedValue(
-            strategy=GenerationType.SEQUENCE, // la valeur de id est générée par une séquence
-            generator="SEQ_CLIENT" // nom de la séquence
+   @Id
+   @Column(name = "NUMERO")
+   @GeneratedValue(
+            strategy = GenerationType.SEQUENCE, // Utilise une séquence pour générer les valeurs
+            generator = "seq_client"        // Associe l'ID au générateur nommé "seq_client"
+    )
+    @SequenceGenerator(
+            name = "seq_client",            // Nom du générateur
+            sequenceName = "SEQ_CLIENT",    // Nom de la séquence dans la base de données
+            allocationSize = 1                 // Taille d'allocation définie à 1 pour correspondre à la séquence dans la base
     )
     private Long id;
 
-    @Column(name="TELEPHONE") // attribut mappé sur la colonne TELEPHONE
+    @Column(name = "TELEPHONE")
     private String phone;
 
-    @Column(name="EMAIL") // attribut mappé sur la colonne EMAIL
+    @Column(name = "EMAIL")
     private String email;
 
-    @OneToMany(mappedBy="customer")
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders = new HashSet<>();
 
-    @Embedded // l'adresse existe comme objet mais pas comme table
+    @Embedded
     private Address address;
 
-    @Column(name="TYPE") // attribut mappé sur la colonne TYPE
+    @Column(name = "TYPE", insertable = false, updatable = false)
     private String type;
+
+    protected Customer() {}
 
     protected Customer(Long id, String phone, String email, Address address, String type) {
         this.id = id;
