@@ -21,7 +21,8 @@ public class Order {
     )
     @Column(name = "NUMERO")
     private Long id;
-    @Transient
+
+
     @ManyToOne // relation many-to-one avec la table CLIENT
     @JoinColumn(name="FK_CLIENT", nullable=false) // clé étrangère vers la table CLIENT
     private Customer customer;
@@ -45,6 +46,7 @@ public class Order {
     private LocalDateTime when;
 
     // On ne mappe pas le totalAmount car il est calculé à partir des produits
+    @Transient
     private BigDecimal totalAmount;
 
     public Order(Long id, Customer customer, Restaurant restaurant, String takeAway, LocalDateTime when) {
