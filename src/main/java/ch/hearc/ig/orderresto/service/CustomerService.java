@@ -1,21 +1,29 @@
 package ch.hearc.ig.orderresto.service;
 
 import ch.hearc.ig.orderresto.business.*;
-import ch.hearc.ig.orderresto.persistence.CustomerMapper;
-
-import java.sql.Connection;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class CustomerService {
 
     public Customer findCustomerByEmail(String email) {
-        try (Connection connection = ConnectionDb.getInstance().getConnection()) {
-            return CustomerMapper.findByEmail(connection, email);
+        EntityManager em = null;
+        try {
+            em = JpaUtils.getEntityManager();
+            TypedQuery<Customer> query = em.createQuery(
+                    "SELECT c FROM Customer c WHERE c.email = :email", Customer.class);
+            query.setParameter("email", email);
+
+            List<Customer> customers = query.getResultList();
+            return customers.isEmpty() ? null : customers.get(0);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
-            ConnectionDb.getInstance().releaseConnection();
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
@@ -32,18 +40,21 @@ public class CustomerService {
     }
 
     private void insertCustomer(Customer customer) {
-        try (Connection connection = ConnectionDb.getInstance().getConnection()) {
-            CustomerMapper.insert(connection, customer);
-            connection.commit();
+        EntityManager em = null;
+        try {
+            em = JpaUtils.getEntityManager();
+            em.getTransaction().begin();
+            em.persist(customer);
+            em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-            try (Connection connection = ConnectionDb.getInstance().getConnection()) {
-                connection.rollback();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
             }
         } finally {
-            ConnectionDb.getInstance().releaseConnection();
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
