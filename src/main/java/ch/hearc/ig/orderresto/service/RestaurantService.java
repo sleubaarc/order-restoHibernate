@@ -24,10 +24,7 @@ public class RestaurantService {
             System.out.println("Erreur lors de la récupération des restaurants.");
             return null;
         } finally {
-            // Fermer l'EntityManager si ouvert --> à utiliser méthode de JpaUtils
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
+            JpaUtils.closeEntityManager();
         }
     }
 

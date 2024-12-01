@@ -26,10 +26,7 @@ public class ProductService {
             System.out.println("Erreur lors de la récupération des produits pour le restaurant " + restaurant.getName());
             return null;
         } finally {
-            // Fermer l'EntityManager si ouvert
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
+            JpaUtils.closeEntityManager();
         }
     }
 }

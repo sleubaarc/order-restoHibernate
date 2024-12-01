@@ -21,9 +21,7 @@ public class CustomerService {
             e.printStackTrace();
             return null;
         } finally {
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
+            JpaUtils.closeEntityManager();
         }
     }
 
@@ -52,9 +50,7 @@ public class CustomerService {
                 em.getTransaction().rollback();
             }
         } finally {
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
+            JpaUtils.closeEntityManager();
         }
     }
 
