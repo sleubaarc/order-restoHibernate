@@ -4,19 +4,15 @@ import ch.hearc.ig.orderresto.business.Customer;
 import ch.hearc.ig.orderresto.business.Order;
 import ch.hearc.ig.orderresto.business.Product;
 import ch.hearc.ig.orderresto.business.Restaurant;
-import ch.hearc.ig.orderresto.persistence.OrderMapper;
-
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderService {
-
-    private final OrderMapper orderMapper = new OrderMapper();
 
     public Order createOrder(Customer customer, Restaurant restaurant, Product product, String takeAway) {
         Order order = new Order(null, customer, restaurant, takeAway, LocalDateTime.now());
@@ -25,30 +21,43 @@ public class OrderService {
     }
 
     public void insertOrder(Order order) {
-        try (Connection connection = ConnectionDb.getInstance().getConnection()) {
-            orderMapper.insert(connection, order);
-            connection.commit();
+        EntityManager em = null;
+        try {
+            em = JpaUtils.getEntityManager();
+            em.getTransaction().begin();
+            em.persist(order);
+            em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-            try (Connection connection = ConnectionDb.getInstance().getConnection()) {
-                connection.rollback();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
             }
         } finally {
-            ConnectionDb.getInstance().releaseConnection();
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
     public List<Order> getOrdersByCustomer(Customer customer) {
-        try (Connection connection = ConnectionDb.getInstance().getConnection()) {
-            Collection<Order> orders = orderMapper.findByCustomer(connection, customer);
-            return new ArrayList<>(orders);  // Conversion explicite en List
-        } catch (SQLException e) {
+        EntityManager em = null;
+        try {
+            em = JpaUtils.getEntityManager();
+            TypedQuery<Order> query = em.createQuery(
+                    "SELECT o FROM Order o WHERE o.customer = :customer", Order.class);
+            query.setParameter("customer", customer);
+            return query.getResultList();
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erreur lors de la récupération des commandes du client.", e);
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
+
+    // PROBLEME AVEC CETTE METHODES A CORRIGER
 
     public String getFormattedOrderInfo(Order order) {
         LocalDateTime when = order.getWhen();
@@ -77,11 +86,8 @@ public class OrderService {
     public String getOrderRestaurantName(Order order) {
         return order.getRestaurant().getName();
     }
+
     public BigDecimal getOrderTotalAmount(Order order) {
         return order.getTotalAmount();
     }
-    public String getOrderTakeAway(Order order) {
-        return order.getTakeAway();
-    }
-
 }
