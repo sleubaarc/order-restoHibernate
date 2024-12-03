@@ -24,12 +24,15 @@ public class Restaurant {
     @Column(name="NOM") // attribut mappé sur la colonne NOM
     private String name;
 
+    @Transient
     @OneToMany(mappedBy="restaurant") // relation one-to-many avec la table COMMANDE, il faut indiquer l'attribut dans commande --> en minuscule
     private Set<Order> orders;
 
+    @Transient
     @Embedded // l'adresse existe comme objet mais pas comme table
     private Address address;
 
+    @Transient
     @OneToMany(mappedBy="restaurant") // relation one-to-many avec la table PRODUIT, il faut indiquer l'attribut dans produit --> en minuscule
     private Set<Product> productsCatalog;
 
