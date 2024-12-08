@@ -31,7 +31,7 @@ public class Order {
     @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
 
-    @ManyToMany // relation many-to-many avec la table PRODUIT
+    @ManyToMany (fetch = FetchType.EAGER) // relation many-to-many avec la table PRODUIT
     @JoinTable(
             name="PRODUIT_COMMANDE", // table associative
             joinColumns=@JoinColumn(name="FK_COMMANDE"), // clé étrangère vers la table COMMANDE
@@ -92,6 +92,12 @@ public class Order {
     }
 
     public BigDecimal getTotalAmount() {
+        if (totalAmount == null) {
+            totalAmount = BigDecimal.ZERO;
+            for (Product product : products) {
+                totalAmount = totalAmount.add(product.getUnitPrice());
+            }
+        }
         return totalAmount;
     }
 
