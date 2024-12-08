@@ -33,7 +33,7 @@ public class Product {
     @ManyToMany(mappedBy="products") // relation many-to-many avec la table COMMANDE
     private Set<Order> orders;
 
-    @ManyToOne  // relation many-to-one avec la table RESTAURANT
+    @ManyToOne (fetch=FetchType.LAZY)  // relation many-to-one avec la table RESTAURANT
     @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
 
