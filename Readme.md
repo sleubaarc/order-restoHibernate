@@ -19,9 +19,11 @@ Launch application and follow the instructions.
 * annotate the PrivateCustomer class
 * annotate the OrganizationCustomer class
 * modify the service classes to use the annotations
+* test the persistence
+* Correct methode in OrderService to format order and display order and not bug
 
 ##ToDo
-* choose which Data structure to use for each ...toMany relationship ??
-* test the persistence --> half done
-* Correct methode in OrderService to format order and display order and not bug
-* Add DAO in persistence to move methode from service to persistence
+
+* choose FetchType on every relation OneTo.. et ManyTo...
+* Optimise SELECT query to avoir multiple call to DB
+* Add DAO in persistence to move methode from service to persistence, shall we do interface, abstract, implmentation for DAO?
