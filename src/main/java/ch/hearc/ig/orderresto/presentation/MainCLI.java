@@ -1,6 +1,7 @@
 package ch.hearc.ig.orderresto.presentation;
 
 import ch.hearc.ig.orderresto.business.Order;
+import ch.hearc.ig.orderresto.service.JpaUtils;
 
 public class MainCLI extends AbstractCLI {
     public void run() {
@@ -16,6 +17,7 @@ public class MainCLI extends AbstractCLI {
     private void handleUserChoice(int userChoice) {
         if (userChoice == 0) {
             this.ln("Good bye!");
+            JpaUtils.closeEntityManagerFactoryAndEntityManager();
             return;
         }
 

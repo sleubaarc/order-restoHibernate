@@ -3,12 +3,28 @@ package ch.hearc.ig.orderresto.service;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.function.Consumer;
 
 public class JpaUtils {
     private static EntityManagerFactory emf;
     private static EntityManager em;
 
     private JpaUtils() {
+    }
+
+    public static void inTransaction(Consumer<EntityManager> function) {
+        try {
+            EntityManager em = JpaUtils.getEntityManager();
+            em.getTransaction().begin();
+            function.accept(em);
+            em.flush();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        }
     }
 
     public static synchronized EntityManager getEntityManager() {
