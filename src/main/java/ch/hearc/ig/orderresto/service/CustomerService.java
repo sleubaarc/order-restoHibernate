@@ -37,7 +37,7 @@ public class CustomerService {
         return newCustomer;
     }
 
-    private void insertCustomer(Customer customer) {
+/*    private void insertCustomer(Customer customer) {
         EntityManager em = null;
         try {
             em = JpaUtils.getEntityManager();
@@ -52,6 +52,13 @@ public class CustomerService {
         } finally {
             JpaUtils.closeEntityManager();
         }
+    }
+*/
+
+    private void insertCustomer(Customer customer) {
+        JpaUtils.inTransaction((em) -> {
+            em.persist(customer);
+        });
     }
 
     public String getCustomerEmail(Customer customer) {
