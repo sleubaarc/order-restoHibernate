@@ -20,7 +20,7 @@ public class OrderService {
         return order;
     }
 
-    public void insertOrder(Order order) {
+/*    public void insertOrder(Order order) {
         EntityManager em = null;
         try {
             em = JpaUtils.getEntityManager();
@@ -38,7 +38,12 @@ public class OrderService {
             }
         }
     }
-
+*/
+    public void insertOrder(Order order) {
+        JpaUtils.inTransaction((em) -> {
+            em.persist(order);
+        });
+    }
     public List<Order> getOrdersByCustomer(Customer customer) {
         EntityManager em = null;
         try {
