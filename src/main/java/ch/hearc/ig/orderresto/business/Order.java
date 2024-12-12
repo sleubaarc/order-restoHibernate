@@ -23,11 +23,11 @@ public class Order {
     private Long id;
 
 
-    @ManyToOne // relation many-to-one avec la table CLIENT
+    @ManyToOne (fetch = FetchType.EAGER) // relation many-to-one avec la table CLIENT
     @JoinColumn(name="FK_CLIENT", nullable=false) // clé étrangère vers la table CLIENT
     private Customer customer;
 
-    @ManyToOne // relation many-to-one avec la table RESTAURANT
+    @ManyToOne (fetch = FetchType.EAGER) // relation many-to-one avec la table RESTAURANT
     @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
 
