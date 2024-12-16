@@ -24,6 +24,6 @@ Launch application and follow the instructions.
 
 ##ToDo
 
-* choose FetchType on every relation OneTo.. et ManyTo...
-* Optimise SELECT query to avoir multiple call to DB
-* Add DAO in persistence to move methode from service to persistence, shall we do interface, abstract, implmentation for DAO?
+* choose FetchType on every relation OneTo.. et ManyTo... (should be ok)
+* Optimise SELECT query to avoir multiple call to DB (MUST DO)
+
