@@ -8,24 +8,11 @@ import java.util.List;
 public class RestaurantService {
 
     public List<Restaurant> getAllRestaurants() {
-        EntityManager em = null;
-        try {
-            // Obtenir l'EntityManager via JpaUtils
-            em = JpaUtils.getEntityManager();
-
-            // Créer une requête JPQL pour récupérer tous les restaurants
+        return JpaUtils.inTransaction(em -> {
             TypedQuery<Restaurant> query = em.createQuery(
                     "SELECT r FROM Restaurant r", Restaurant.class);
-
-            // Exécuter la requête et retourner la liste
             return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la récupération des restaurants.");
-            return null;
-        } finally {
-            JpaUtils.closeEntityManager();
-        }
+        });
     }
 
         public String getRestaurantName(Restaurant restaurant) {
