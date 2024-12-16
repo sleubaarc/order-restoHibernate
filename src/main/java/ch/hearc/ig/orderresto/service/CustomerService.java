@@ -8,21 +8,17 @@ import java.util.List;
 public class CustomerService {
 
     public Customer findCustomerByEmail(String email) {
-        EntityManager em = null;
-        try {
-            em = JpaUtils.getEntityManager();
+        // Utilisation de la méthode générique inTransaction de JpaUtils
+        // Qui permet d'exécuter une opération dans une transaction JPA
+        return JpaUtils.inTransaction(em -> {
             TypedQuery<Customer> query = em.createQuery(
-                    "SELECT c FROM Customer c WHERE c.email = :email", Customer.class);
+                    "SELECT c FROM Customer c " +
+                            "LEFT JOIN FETCH c.orders " +
+                            "WHERE c.email = :email", Customer.class);
             query.setParameter("email", email);
-
             List<Customer> customers = query.getResultList();
             return customers.isEmpty() ? null : customers.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            JpaUtils.closeEntityManager();
-        }
+        });
     }
 
     public Customer createPrivateCustomer(String email, String phone, Address address, String gender, String firstName, String lastName) {
@@ -37,27 +33,10 @@ public class CustomerService {
         return newCustomer;
     }
 
-/*    private void insertCustomer(Customer customer) {
-        EntityManager em = null;
-        try {
-            em = JpaUtils.getEntityManager();
-            em.getTransaction().begin();
+    private Customer insertCustomer(Customer customer) {
+        return JpaUtils.inTransaction((em) -> {
             em.persist(customer);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (em != null && em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-        } finally {
-            JpaUtils.closeEntityManager();
-        }
-    }
-*/
-
-    private void insertCustomer(Customer customer) {
-        JpaUtils.inTransaction((em) -> {
-            em.persist(customer);
+            return customer;
         });
     }
 
