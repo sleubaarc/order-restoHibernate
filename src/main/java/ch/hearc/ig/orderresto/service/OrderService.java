@@ -4,7 +4,6 @@ import ch.hearc.ig.orderresto.business.Customer;
 import ch.hearc.ig.orderresto.business.Order;
 import ch.hearc.ig.orderresto.business.Product;
 import ch.hearc.ig.orderresto.business.Restaurant;
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,49 +19,23 @@ public class OrderService {
         return order;
     }
 
-/*    public void insertOrder(Order order) {
-        EntityManager em = null;
-        try {
-            em = JpaUtils.getEntityManager();
-            em.getTransaction().begin();
-            em.persist(order);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (em != null && em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-        } finally {
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
-        }
-    }
-*/
+
     public void insertOrder(Order order) {
         JpaUtils.inTransaction((em) -> {
             em.persist(order);
+            return order;
         });
     }
     public List<Order> getOrdersByCustomer(Customer customer) {
-        EntityManager em = null;
-        try {
-            em = JpaUtils.getEntityManager();
+        return JpaUtils.inTransaction(em -> {
             TypedQuery<Order> query = em.createQuery(
-                    "SELECT o FROM Order o WHERE o.customer = :customer", Order.class);
+                    "SELECT DISTINCT o FROM Order o " +
+                            "LEFT JOIN FETCH o.customer c " +
+                            "WHERE o.customer = :customer", Order.class);
             query.setParameter("customer", customer);
             return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erreur lors de la récupération des commandes du client.", e);
-        } finally {
-            if (em != null && em.isOpen()) {
-                em.close();
-            }
-        }
+        });
     }
-
-    // PROBLEME AVEC CETTE METHODES A CORRIGER
 
     public String getFormattedOrderInfo(Order order) {
         LocalDateTime when = order.getWhen();
