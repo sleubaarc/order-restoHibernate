@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class JpaUtils {
     private static EntityManagerFactory emf;
@@ -11,19 +12,27 @@ public class JpaUtils {
 
     private JpaUtils() {
     }
-
-    public static void inTransaction(Consumer<EntityManager> function) {
+    // Méthode générique pour exécuter une opération transactionnelle JPA
+    // <T> : Type générique de retour de la fonction
+    public static <T> T inTransaction(Function<EntityManager, T> function) {
+        EntityManager em = null;
         try {
-            EntityManager em = JpaUtils.getEntityManager();
+            em = getEntityManager();
             em.getTransaction().begin();
-            function.accept(em);
-            em.flush();
+            // Exécuter la fonction passée en paramètre
+            // function.apply() exécute le code métier fourni par l'appelant
+            // avec l'EntityManager comme contexte de persistance
+            T result = function.apply(em);
+            // Si la fonction s'exécute sans exception, valider (commit) la transaction
             em.getTransaction().commit();
+            return result;
         } catch (Exception e) {
-            e.printStackTrace();
             if (em != null && em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
+            throw new RuntimeException("Erreur lors de la transaction", e);
+        } finally {
+            closeEntityManager();
         }
     }
 
@@ -36,6 +45,7 @@ public class JpaUtils {
         }
         return em;
     }
+
 
 
     public static void closeEntityManager() {
