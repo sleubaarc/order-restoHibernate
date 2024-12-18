@@ -9,6 +9,7 @@ import java.util.function.Function;
 public class JpaUtils {
     private static EntityManagerFactory emf;
     private static EntityManager em;
+    private static final ThreadLocal<EntityManager> threadLocalEntityManager = new ThreadLocal<>();
 
     private JpaUtils() {
     }
@@ -16,15 +17,18 @@ public class JpaUtils {
     // <T> : Type générique de retour de la fonction
     public static <T> T inTransaction(Function<EntityManager, T> function) {
         EntityManager em = null;
+        boolean shouldClose = false;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
-            // Exécuter la fonction passée en paramètre
-            // function.apply() exécute le code métier fourni par l'appelant
-            // avec l'EntityManager comme contexte de persistance
+            boolean isNewTransaction = !em.getTransaction().isActive();
+            if (isNewTransaction) {
+                em.getTransaction().begin();
+                shouldClose = true;
+            }
             T result = function.apply(em);
-            // Si la fonction s'exécute sans exception, valider (commit) la transaction
-            em.getTransaction().commit();
+            if (isNewTransaction) {
+                em.getTransaction().commit();
+            }
             return result;
         } catch (Exception e) {
             if (em != null && em.getTransaction().isActive()) {
@@ -32,25 +36,30 @@ public class JpaUtils {
             }
             throw new RuntimeException("Erreur lors de la transaction", e);
         } finally {
-            closeEntityManager();
+            if (shouldClose) {
+                closeEntityManager();
+            }
         }
     }
 
     public static synchronized EntityManager getEntityManager() {
+        EntityManager em = threadLocalEntityManager.get();
         if (em == null || !em.isOpen()) {
             if (emf == null) {
                 emf = Persistence.createEntityManagerFactory("GuideRestoPersistenceUnit");
             }
             em = emf.createEntityManager();
+            threadLocalEntityManager.set(em);
         }
         return em;
     }
 
 
-
     public static void closeEntityManager() {
+        EntityManager em = threadLocalEntityManager.get();
         if (em != null && em.isOpen()) {
             em.close();
+            threadLocalEntityManager.remove();
         }
     }
 
