@@ -26,17 +26,19 @@ public class OrderService {
             return order;
         });
     }
-    public List<Order> getOrdersByCustomer(Customer customer) {
-        return JpaUtils.inTransaction(em -> {
-            TypedQuery<Order> query = em.createQuery(
-                    "SELECT DISTINCT o FROM Order o " +
-                            "LEFT JOIN FETCH o.customer c " +
-                            "WHERE o.customer = :customer", Order.class);
-            query.setParameter("customer", customer);
-            return query.getResultList();
-        });
-    }
-
+        public List<Order> getOrdersByCustomer(Customer customer) {
+            return JpaUtils.inTransaction(em -> {
+                TypedQuery<Order> query = em.createQuery(
+                        "SELECT DISTINCT o FROM Order o " +
+                                "LEFT JOIN FETCH o.customer c " +
+                                "LEFT JOIN FETCH o.restaurant r " +
+                                "LEFT JOIN FETCH o.products p " +
+                                "LEFT JOIN FETCH p.restaurant pr " +
+                                "WHERE o.customer = :customer", Order.class);
+                query.setParameter("customer", customer);
+                return query.getResultList();
+            });
+        }
     public String getFormattedOrderInfo(Order order) {
         LocalDateTime when = order.getWhen();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy à HH:mm");

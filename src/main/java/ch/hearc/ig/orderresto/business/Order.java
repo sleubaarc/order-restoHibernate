@@ -23,15 +23,15 @@ public class Order {
     private Long id;
 
 
-    @ManyToOne (fetch = FetchType.EAGER) // relation many-to-one avec la table CLIENT
+    @ManyToOne (fetch = FetchType.LAZY) // relation many-to-one avec la table CLIENT
     @JoinColumn(name="FK_CLIENT", nullable=false) // clé étrangère vers la table CLIENT
     private Customer customer;
 
-    @ManyToOne (fetch = FetchType.EAGER) // relation many-to-one avec la table RESTAURANT
+    @ManyToOne (fetch = FetchType.LAZY) // relation many-to-one avec la table RESTAURANT
     @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
 
-    @ManyToMany (fetch = FetchType.EAGER) // relation many-to-many avec la table PRODUIT
+    @ManyToMany (fetch = FetchType.LAZY) // relation many-to-many avec la table PRODUIT
     @JoinTable(
             name="PRODUIT_COMMANDE", // table associative
             joinColumns=@JoinColumn(name="FK_COMMANDE"), // clé étrangère vers la table COMMANDE
