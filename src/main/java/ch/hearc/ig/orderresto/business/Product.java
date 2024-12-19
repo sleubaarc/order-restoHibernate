@@ -30,10 +30,10 @@ public class Product {
     @Column(name="DESCRIPTION") // attribut mappé sur la colonne DESCRIPTION
     private String description;
 
-    @ManyToMany(mappedBy="products", fetch = FetchType.EAGER) // relation many-to-many avec la table COMMANDE
+    @ManyToMany(mappedBy="products", fetch = FetchType.LAZY) // relation many-to-many avec la table COMMANDE
     private Set<Order> orders;
 
-    @ManyToOne (fetch=FetchType.EAGER)  // relation many-to-one avec la table RESTAURANT
+    @ManyToOne (fetch=FetchType.LAZY)  // relation many-to-one avec la table RESTAURANT
     @JoinColumn(name="FK_RESTO", nullable=false) // clé étrangère vers la table RESTAURANT
     private Restaurant restaurant;
 
