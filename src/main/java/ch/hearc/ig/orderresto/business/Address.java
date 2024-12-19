@@ -55,7 +55,6 @@ public class Address {
 
         Address address = (Address) o;
 
-        // Comparer tous les champs de l'adresse
         return (countryCode != null ? countryCode.equals(address.countryCode) : address.countryCode == null) &&
                 (postalCode != null ? postalCode.equals(address.postalCode) : address.postalCode == null) &&
                 (locality != null ? locality.equals(address.locality) : address.locality == null) &&
@@ -63,7 +62,6 @@ public class Address {
                 (streetNumber != null ? streetNumber.equals(address.streetNumber) : address.streetNumber == null);
     }
 
-    //méthode moins performante (refléxion interne) mais plus lisible --> utilise également Prime 31 (moins de collisions)
     @Override
     public int hashCode() {
         return Objects.hash(countryCode, postalCode, locality, street, streetNumber);
