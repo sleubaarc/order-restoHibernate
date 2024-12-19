@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity // La classe est une entité persistante qui est mappée à une table de la DB
@@ -113,12 +114,10 @@ public class Order {
 
         Order order = (Order) o;
 
-        // Si les IDs sont présents, on compare uniquement les IDs
         if (id != null && order.id != null) {
             return id.equals(order.id);
         }
 
-        // Sinon, on compare les attributs métier qui identifient une commande
         return customer != null && restaurant != null && when != null &&
                 customer.equals(order.customer) &&
                 restaurant.equals(order.restaurant) &&
@@ -127,18 +126,10 @@ public class Order {
 
     @Override
     public int hashCode() {
-        // Si l'ID est présent, on utilise uniquement l'ID
         if (id != null) {
-            return id.hashCode();
+            return Objects.hash(id);
         }
 
-        // Sinon, on utilise les mêmes attributs que dans equals()
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (customer != null ? customer.hashCode() : 0);
-        result = prime * result + (restaurant != null ? restaurant.hashCode() : 0);
-        result = prime * result + (when != null ? when.hashCode() : 0);
-        return result;
+        return Objects.hash(customer, restaurant, when);
     }
-
 }
