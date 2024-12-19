@@ -1,6 +1,7 @@
 package ch.hearc.ig.orderresto.business;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -83,13 +84,10 @@ public class Restaurant {
 
         Restaurant restaurant = (Restaurant) o;
 
-        // Si les IDs sont présents, on compare uniquement les IDs
         if (id != null && restaurant.id != null) {
             return id.equals(restaurant.id);
         }
 
-        // Sinon, on compare le nom et l'adresse
-        // Un restaurant est considéré unique par son nom et son adresse
         return name != null && address != null &&
                 name.equals(restaurant.name) &&
                 address.equals(restaurant.address);
@@ -97,17 +95,9 @@ public class Restaurant {
 
     @Override
     public int hashCode() {
-        // Si l'ID est présent, on utilise uniquement l'ID
         if (id != null) {
-            return id.hashCode();
+            return Objects.hash(id);
         }
-
-        // Sinon, on utilise les mêmes attributs que dans equals()
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (name != null ? name.hashCode() : 0);
-        result = prime * result + (address != null ? address.hashCode() : 0);
-        return result;
+        return Objects.hash(name, address);
     }
-
 }
