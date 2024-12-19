@@ -17,16 +17,15 @@ public class Address {
     @Column (name="NUM_RUE") // attribut mappé sur la colonne NUMERO
     private String streetNumber;
 
+    public Address() {
+    }
+
     public Address(String countryCode, String postalCode, String locality, String street, String streetNumber) {
         this.countryCode = countryCode;
         this.postalCode = postalCode;
         this.locality = locality;
         this.street = street;
         this.streetNumber = streetNumber;
-    }
-
-    public Address() {
-
     }
 
     public String getCountryCode() {
@@ -63,6 +62,7 @@ public class Address {
                 (street != null ? street.equals(address.street) : address.street == null) &&
                 (streetNumber != null ? streetNumber.equals(address.streetNumber) : address.streetNumber == null);
     }
+
     //méthode moins performante (refléxion interne) mais plus lisible --> utilise également Prime 31 (moins de collisions)
     @Override
     public int hashCode() {
