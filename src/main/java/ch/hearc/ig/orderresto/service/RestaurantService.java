@@ -1,7 +1,6 @@
 package ch.hearc.ig.orderresto.service;
 
 import ch.hearc.ig.orderresto.business.Restaurant;
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 

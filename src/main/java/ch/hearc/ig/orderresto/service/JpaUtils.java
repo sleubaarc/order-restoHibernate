@@ -3,7 +3,6 @@ package ch.hearc.ig.orderresto.service;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class JpaUtils {
@@ -13,8 +12,7 @@ public class JpaUtils {
 
     private JpaUtils() {
     }
-    // Méthode générique pour exécuter une opération transactionnelle JPA
-    // <T> : Type générique de retour de la fonction
+
     public static <T> T inTransaction(Function<EntityManager, T> function) {
         EntityManager em = null;
         boolean shouldClose = false;
@@ -54,7 +52,6 @@ public class JpaUtils {
         return em;
     }
 
-
     public static void closeEntityManager() {
         EntityManager em = threadLocalEntityManager.get();
         if (em != null && em.isOpen()) {
@@ -74,4 +71,3 @@ public class JpaUtils {
         closeEntityManager();
     }
 }
-

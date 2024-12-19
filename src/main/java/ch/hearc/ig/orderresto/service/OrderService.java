@@ -19,13 +19,13 @@ public class OrderService {
         return order;
     }
 
-
     public Order insertOrder(Order order) {
         return JpaUtils.inTransaction((em) -> {
             em.persist(order);
             return order;
         });
     }
+
         public List<Order> getOrdersByCustomer(Customer customer) {
             return JpaUtils.inTransaction(em -> {
                 TypedQuery<Order> query = em.createQuery(
@@ -39,6 +39,7 @@ public class OrderService {
                 return query.getResultList();
             });
         }
+
     public String getFormattedOrderInfo(Order order) {
         LocalDateTime when = order.getWhen();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy à HH:mm");

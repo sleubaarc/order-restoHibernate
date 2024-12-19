@@ -1,15 +1,12 @@
 package ch.hearc.ig.orderresto.service;
 
 import ch.hearc.ig.orderresto.business.*;
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class CustomerService {
 
     public Customer findCustomerByEmail(String email) {
-        // Utilisation de la méthode générique inTransaction de JpaUtils
-        // Qui permet d'exécuter une opération dans une transaction JPA
         return JpaUtils.inTransaction(em -> {
             TypedQuery<Customer> query = em.createQuery(
                     "SELECT c FROM Customer c " +
