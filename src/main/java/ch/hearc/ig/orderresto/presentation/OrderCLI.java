@@ -83,7 +83,7 @@ public class OrderCLI extends AbstractCLI {
         BigDecimal totalAmount = orderService.getOrderTotalAmount(order);
         String takeAway = order.getTakeAway().equalsIgnoreCase("O") ? ", à emporter" : ", à consommer sur place";
 
-        System.out.println(String.format("Commande %.2f, le %s chez %s:", totalAmount, formattedDate, restaurantName));
+        System.out.println(String.format("Commande de %.2f CHF, le %s chez %s :", totalAmount, formattedDate, restaurantName));
 
         List<String> productsInfo = orderService.getFormattedProductsInfo(order);
         for (String productInfo : productsInfo) {
