@@ -76,10 +76,6 @@ public abstract class Customer {
         return orders;
     }
 
-    public void addOrder(Order order) {
-        this.orders.add(order);
-    }
-
     public Address getAddress() {
         return address;
     }

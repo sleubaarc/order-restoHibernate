@@ -87,10 +87,6 @@ public class Product {
         );
     }
 
-    public void addOrder(Order order) {
-        this.orders.add(order);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

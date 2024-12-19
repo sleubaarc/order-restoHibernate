@@ -7,7 +7,6 @@ import java.util.function.Function;
 
 public class JpaUtils {
     private static EntityManagerFactory emf;
-    private static EntityManager em;
     private static final ThreadLocal<EntityManager> threadLocalEntityManager = new ThreadLocal<>();
 
     private JpaUtils() {
