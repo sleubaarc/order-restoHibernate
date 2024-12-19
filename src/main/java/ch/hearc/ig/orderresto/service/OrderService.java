@@ -20,8 +20,8 @@ public class OrderService {
     }
 
 
-    public void insertOrder(Order order) {
-        JpaUtils.inTransaction((em) -> {
+    public Order insertOrder(Order order) {
+        return JpaUtils.inTransaction((em) -> {
             em.persist(order);
             return order;
         });
